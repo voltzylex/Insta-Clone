@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:random/utils/global_variable.dart';
+import 'package:instagram_clone/utils/global_variable.dart';
 
 class ResponsiveLayout extends StatefulWidget {
   const ResponsiveLayout(

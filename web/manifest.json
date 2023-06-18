@@ -1,6 +1,6 @@
 {
-    "name": "random",
-    "short_name": "random",
+    "name": "instagram_clone",
+    "short_name": "instagram_clone",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:random/utils/colors.dart';
-import 'package:random/widgets/text_field_input.dart';
+import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/widgets/text_field_input.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

@@ -21,6 +21,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   Uint8List? image;
+  bool? isLoading = false;
   @override
   void dispose() {
     _emailController.dispose();
@@ -64,7 +65,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     image != null
                         ? CircleAvatar(
                             radius: 50, backgroundImage: MemoryImage(image!))
-                        : CircleAvatar(
+                        : const CircleAvatar(
                             radius: 50,
                             backgroundImage: NetworkImage(
                                 "https://images.unsplash.com/photo-1685124762520-e7ddb57c9ce7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"),
@@ -78,7 +79,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             onPressed: () {
                               selectedImage();
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.add_a_photo,
                               color: Colors.white,
                               size: 20,
@@ -120,6 +121,20 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 InkWell(
                   onTap: () async {
+                    if (image == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: const Text("NO image selected"),
+                        backgroundColor: (Colors.white),
+                        action: SnackBarAction(
+                          label: 'dismiss',
+                          onPressed: () {},
+                        ),
+                      ));
+                      return;
+                    }
+                    setState(() {
+                      isLoading = true;
+                    });
                     final data = await AuthMethods().signUpUser(
                         email: _emailController.text,
                         password: _passwordController.text,
@@ -134,6 +149,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         onPressed: () {},
                       ),
                     );
+                    setState(() {
+                      isLoading = false;
+                    });
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   },
                   child: Container(
@@ -149,7 +167,13 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       color: blueColor,
                     ),
-                    child: const Text("Sign up"),
+                    child: !isLoading!
+                        ? const Text("Sign up")
+                        : const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          ),
                   ),
                 ),
                 const SizedBox(
@@ -160,10 +184,15 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(child: const Text("Dont have an Account? ")),
+                      Container(
+                          child: const Text("Already  have an Account ? ")),
                       InkWell(
                           onTap: null,
-                          child: Container(child: const Text("Create one"))),
+                          child: Container(
+                              child: const Text(
+                            "Create one",
+                            style: TextStyle(color: blueColor),
+                          ))),
                     ],
                   ),
                 ),

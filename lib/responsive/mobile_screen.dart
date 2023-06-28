@@ -6,6 +6,6 @@ class MobileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SignupScreen();
+    return const SignupScreen();
   }
 }

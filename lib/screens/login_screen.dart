@@ -25,13 +25,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Flexible(
-                child: Container(),
                 flex: 2,
+                child: Container(),
               ),
               SvgPicture.asset(
                 "assets/ic_instagram.svg",
@@ -39,14 +39,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: Colors.white,
                 alignment: Alignment.center,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 64,
               ),
               TextFieldInput(
                   textEditingController: _emailController,
                   hintText: "Enter Your Email",
                   textInputType: TextInputType.emailAddress),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
               TextFieldInput(
@@ -55,14 +55,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 textInputType: TextInputType.visiblePassword,
                 obscureText: true,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
               Container(
                 width: double.infinity,
                 alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(vertical: 12),
-                decoration: ShapeDecoration(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: const ShapeDecoration(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(4),
@@ -70,24 +70,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   color: blueColor,
                 ),
-                child: Text("Log in"),
+                child: const Text("Log in"),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 60,
               ),
               Flexible(
-                child: Container(),
                 flex: 2,
+                child: Container(),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(child: Text("Dont have an Account? ")),
+                  Container(child: const Text("Dont have an Account? ")),
                   InkWell(
-                      onTap: null, child: Container(child: Text("Create one"))),
+                      onTap: null, child: Container(child: const Text("Create one"))),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               )
             ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/screens/signup_screen.dart';
 
 class MobileScreen extends StatelessWidget {
@@ -6,6 +7,6 @@ class MobileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SignupScreen();
+    return const LoginScreen();
   }
 }

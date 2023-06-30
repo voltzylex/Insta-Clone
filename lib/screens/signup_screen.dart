@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -141,6 +142,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         bio: _bioController.text,
                         userName: _usernameController.text,
                         file: image!);
+                    log(data.toString());
                     final snackBar = SnackBar(
                       content: Text(data),
                       backgroundColor: (Colors.white),

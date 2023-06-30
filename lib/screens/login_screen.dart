@@ -1,5 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram_clone/resources/auth_method.dart';
+import 'package:instagram_clone/screens/home_screen.dart';
+import 'package:instagram_clone/screens/signup_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
 
@@ -18,6 +23,35 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  bool _isLoading = false;
+  login(String email, String password) async {
+    setState(() {
+      _isLoading = true;
+    });
+    if (email.isNotEmpty && password.isNotEmpty) {
+      String res = await AuthMethods().login(email, password);
+      log(res);
+      if (res == 'Success') {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const HomeScreeen(),
+          ),
+        );
+      }
+      setState(() {
+        _isLoading = false;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Email and password cannot be empty"),
+        backgroundColor: (Colors.red),
+      ));
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -58,19 +92,29 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 24,
               ),
-              Container(
-                width: double.infinity,
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                decoration: const ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(4),
+              InkWell(
+                onTap: () =>
+                    login(_emailController.text, _passwordController.text),
+                child: Container(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: const ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(4),
+                      ),
                     ),
+                    color: blueColor,
                   ),
-                  color: blueColor,
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Text("Log in"),
                 ),
-                child: const Text("Log in"),
               ),
               const SizedBox(
                 height: 60,
@@ -84,7 +128,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Container(child: const Text("Dont have an Account? ")),
                   InkWell(
-                      onTap: null, child: Container(child: const Text("Create one"))),
+                      onTap: () => Navigator.of(context)
+                              .pushReplacement(MaterialPageRoute(
+                            builder: (context) => const SignupScreen(),
+                          )),
+                      child: Container(child: const Text("Create one"))),
                 ],
               ),
               const SizedBox(

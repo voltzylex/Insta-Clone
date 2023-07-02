@@ -9,6 +9,13 @@ class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<model.User> getUserDetails() async {
+    User user = _auth.currentUser!;
+    DocumentSnapshot userData =
+        await _firestore.collection('users').doc(user.uid).get();
+    return model.User.userFromSnap(userData);
+  }
+
   // sign up User
   Future<String> signUpUser({
     required String email,
@@ -23,7 +30,6 @@ class AuthMethods {
           password.isNotEmpty ||
           bio.isNotEmpty ||
           userName.isNotEmpty) {
-        // Regsiter User
         UserCredential crud = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
         /*

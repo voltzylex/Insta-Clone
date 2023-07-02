@@ -1,13 +1,14 @@
 import 'dart:developer';
 import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:instagram_clone/models/user.dart' as model;
 import 'package:instagram_clone/resources/storage_method.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   // sign up User
   Future<String> signUpUser({
     required String email,
@@ -19,12 +20,9 @@ class AuthMethods {
     String res = "Some Error Occured";
     try {
       if (email.isNotEmpty ||
-              password.isNotEmpty ||
-              bio.isNotEmpty ||
-              userName.isNotEmpty
-          //  ||
-          // file != null
-          ) {
+          password.isNotEmpty ||
+          bio.isNotEmpty ||
+          userName.isNotEmpty) {
         // Regsiter User
         UserCredential crud = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
@@ -40,15 +38,17 @@ class AuthMethods {
         String photoUrl = await StorageMethods().uploadImagetoStorage(
             childName: "profilePics", file: file, isPost: false);
 
-        _firestore.collection("users").add({
-          "username": userName,
-          "uid": crud.user!.uid,
-          "email": email,
-          "bio": bio,
-          "followers": [],
-          "followings": [],
-          "photoUrl": photoUrl
-        });
+        model.User user = model.User(
+          bio: bio,
+          email: email,
+          followings: [],
+          uid: crud.user!.uid,
+          username: userName,
+          photoUrl: photoUrl,
+          folowers: [],
+        );
+
+        _firestore.collection("users").doc(crud.user!.uid).set(user.toJson());
 
         res = 'success';
         log(crud.user!.uid);

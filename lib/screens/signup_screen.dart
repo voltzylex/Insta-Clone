@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/resources/auth_method.dart';
+import 'package:instagram_clone/responsive/mobile_screen.dart';
+import 'package:instagram_clone/responsive/responsive_layout.dart';
+import 'package:instagram_clone/responsive/web_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
@@ -143,6 +146,16 @@ class _SignupScreenState extends State<SignupScreen> {
                         userName: _usernameController.text,
                         file: image!);
                     log(data.toString());
+                    if (data == 'success') {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => const ResponsiveLayout(
+                            mobileLayout: MobileScreen(),
+                            webLayout: WebScreen(),
+                          ),
+                        ),
+                      );
+                    }
                     final snackBar = SnackBar(
                       content: Text(data),
                       backgroundColor: (Colors.white),

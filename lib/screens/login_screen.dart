@@ -3,7 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_clone/resources/auth_method.dart';
-import 'package:instagram_clone/screens/home_screen.dart';
+import 'package:instagram_clone/responsive/mobile_screen.dart';
+import 'package:instagram_clone/responsive/responsive_layout.dart';
+import 'package:instagram_clone/responsive/web_screen.dart';
+
 import 'package:instagram_clone/screens/signup_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
@@ -34,9 +37,12 @@ class _LoginScreenState extends State<LoginScreen> {
       String res = await AuthMethods().login(email, password);
       log(res);
       if (res == 'Success') {
-        Navigator.of(context).push(
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => const HomeScreeen(),
+            builder: (context) => const ResponsiveLayout(
+              mobileLayout: MobileScreen(),
+              webLayout: WebScreen(),
+            ),
           ),
         );
       }

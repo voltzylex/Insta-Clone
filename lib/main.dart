@@ -53,6 +53,8 @@ class MainApp extends StatelessWidget {
               log("has data${snapshot.data}");
               if (snapshot.connectionState == ConnectionState.active) {
                 if (snapshot.hasData) {
+                  // Provider.of<UserProvider>(context, listen: false)
+                  //     .refreshUser();
                   return const ResponsiveLayout(
                     mobileLayout: MobileScreen(),
                     webLayout: WebScreen(),

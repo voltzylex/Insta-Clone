@@ -1,9 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/providers/userProvider.dart';
-import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/utils/global_variable.dart';
 import 'package:provider/provider.dart';
 
 class MobileScreen extends StatefulWidget {
@@ -19,10 +20,15 @@ class _MobileScreenState extends State<MobileScreen> {
   late PageController _pageController;
   @override
   void initState() {
-    // TODO: implement initState
+    _pageController = PageController(initialPage: 2);
+    addData();
     super.initState();
-    _pageController = PageController();
     // getUserDetails();
+  }
+
+  addData() async {
+    UserProvider data = Provider.of<UserProvider>(context, listen: false);
+    await data.refreshUser();
   }
 
   void navigationTapped(int page) {
@@ -45,29 +51,26 @@ class _MobileScreenState extends State<MobileScreen> {
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(
       builder: (context, value, child) => Scaffold(
-        appBar: AppBar(
-          backgroundColor: mobileBackgroundColor,
-          actions: [
-            IconButton(
-                icon: const Icon(Icons.logout),
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const LoginScreen()));
-                })
-          ],
-        ),
+        // appBar: AppBar(
+        //   backgroundColor: mobileBackgroundColor,
+        //   actions: [
+        //     IconButton(
+        //         icon: const Icon(Icons.logout),
+        //         onPressed: () async {
+        //           await FirebaseAuth.instance.signOut();
+        //           Navigator.of(context).pushReplacement(MaterialPageRoute(
+        //               builder: (context) => const LoginScreen()));
+        //         })
+        //   ],
+        // ),
         body: PageView(
           controller: _pageController,
-          onPageChanged: pageChange,
+          onPageChanged: (value) {
+            pageChange(value);
+            log(value.toString());
+          },
           physics: const NeverScrollableScrollPhysics(),
-          children: const [
-            Text("page 1"),
-            Text("page 2"),
-            Text("page 3"),
-            Text("page 4"),
-            Text("page 5"),
-          ],
+          children: homeScreen,
         ),
         bottomNavigationBar: CupertinoTabBar(
           backgroundColor: mobileBackgroundColor,

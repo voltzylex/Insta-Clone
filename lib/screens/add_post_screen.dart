@@ -18,6 +18,7 @@ class AddPostScreen extends StatefulWidget {
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
+  bool _isLoading = false;
   final TextEditingController _descriptionController = TextEditingController();
   Uint8List? _file;
   _selectImage(BuildContext context) async {
@@ -60,7 +61,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
     );
   }
 
-  void postImage(
+  Future postImage(
       {required String uid,
       required String username,
       required String profileImage}) async {
@@ -72,6 +73,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
           username: username,
           profileImage: profileImage);
       if (res == 'success') {
+        clearImage();
         showSnackBar("Posted!", context);
       } else {
         showSnackBar(res, context);
@@ -80,6 +82,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
       log(e.toString());
       showSnackBar(e.toString(), context);
     }
+  }
+
+  clearImage() {
+    setState(() {
+      _file = null;
+    });
   }
 
   @override
@@ -114,10 +122,19 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       centerTitle: false,
                       actions: [
                         TextButton(
-                            onPressed: () => postImage(
-                                uid: value.getUser!.uid,
-                                username: value.getUser!.username,
-                                profileImage: value.getUser!.photoUrl),
+                            onPressed: () async {
+                              setState(() {
+                                _isLoading = true;
+                              });
+                              log(_isLoading.toString());
+                              await postImage(
+                                  uid: value.getUser!.uid,
+                                  username: value.getUser!.username,
+                                  profileImage: value.getUser!.photoUrl);
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            },
                             child: const Text(
                               "Post",
                               style: TextStyle(color: blueColor),
@@ -126,6 +143,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     ),
                     body: Column(
                       children: [
+                        _isLoading
+                            ? const LinearProgressIndicator(
+                                color: Colors.blue,
+                              )
+                            : const SizedBox(),
+                        const Divider(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.start,

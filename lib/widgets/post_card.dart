@@ -107,7 +107,31 @@ class PostCard extends StatelessWidget {
                     color: Colors.white,
                   ))
             ],
-          )
+          ),
+          //  DESCRIPTION AND NO OF COMMENT
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DefaultTextStyle(
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(fontWeight: FontWeight.bold),
+                  child: Text(
+                    "1,2 3 4 likes",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(top: 8),
+                  child: RichText(text: text),
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );

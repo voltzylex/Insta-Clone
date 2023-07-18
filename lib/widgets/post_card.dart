@@ -111,6 +111,7 @@ class PostCard extends StatelessWidget {
           //  DESCRIPTION AND NO OF COMMENT
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.bottomLeft,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,9 +127,31 @@ class PostCard extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(top: 8),
-                  child: RichText(text: text),
-                )
+                  padding: const EdgeInsets.only(top: 8),
+                  child: RichText(
+                      text: const TextSpan(
+                          text: "random",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                          children: [
+                        TextSpan(
+                            text: "This is some Description to be replaced",
+                            children: [],
+                            style: TextStyle(fontWeight: FontWeight.w400)),
+                      ])),
+                ),
+                InkWell(
+                  child: Container(
+                    child: const Text(
+                      "View all 200 comments",
+                      style: TextStyle(fontSize: 16, color: secondaryColor),
+                    ),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(0),
+                  child: Text("10/12/2023",
+                      style: TextStyle(fontSize: 16, color: secondaryColor)),
+                ),
               ],
             ),
           ),

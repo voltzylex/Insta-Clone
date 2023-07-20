@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/global_variable.dart';
+import 'package:intl/intl.dart';
 
 class PostCard extends StatelessWidget {
-  const PostCard({super.key});
+  PostCard(
+      {super.key,
+      required this.description,
+      required this.profileImage,
+      required this.userName,
+      required this.postPhoto,
+      required this.dataTime,
+      required this.likes});
+  String description;
+  String profileImage;
+  String userName;
+  String postPhoto;
+  DateTime dataTime;
+  String likes;
 
   @override
   Widget build(BuildContext context) {
@@ -18,20 +32,20 @@ class PostCard extends StatelessWidget {
             child: Row(
               children: [
                 // HEADER Section
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 26,
-                  backgroundImage: NetworkImage(avatarImage),
+                  backgroundImage: NetworkImage(profileImage),
                 ),
-                const Expanded(
+                Expanded(
                   child: Padding(
-                      padding: EdgeInsets.only(left: 8),
+                      padding: const EdgeInsets.only(left: 8),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Name",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            userName,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
                       )),
@@ -71,7 +85,9 @@ class PostCard extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
             child: Image.network(
-              avatarImage,
+              postPhoto,
+              errorBuilder: (context, error, stackTrace) =>
+                  Image.network(avatarImage),
               fit: BoxFit.cover,
             ),
           ),
@@ -122,21 +138,22 @@ class PostCard extends StatelessWidget {
                       .bodyMedium!
                       .copyWith(fontWeight: FontWeight.bold),
                   child: Text(
-                    "1,2 3 4 likes",
+                    "$likes likes",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.only(top: 8),
                   child: RichText(
-                      text: const TextSpan(
-                          text: "random",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                      text: TextSpan(
+                          text: "$userName ",
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                           children: [
                         TextSpan(
-                            text: "This is some Description to be replaced",
-                            children: [],
-                            style: TextStyle(fontWeight: FontWeight.w400)),
+                            text: description,
+                            children: const [],
+                            style:
+                                const TextStyle(fontWeight: FontWeight.w400)),
                       ])),
                 ),
                 InkWell(
@@ -147,10 +164,11 @@ class PostCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(0),
-                  child: Text("10/12/2023",
-                      style: TextStyle(fontSize: 16, color: secondaryColor)),
+                Padding(
+                  padding: const EdgeInsets.all(0),
+                  child: Text(DateFormat.yMMMd().format(dataTime).toString(),
+                      style:
+                          const TextStyle(fontSize: 16, color: secondaryColor)),
                 ),
               ],
             ),

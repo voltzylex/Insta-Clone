@@ -43,8 +43,16 @@ class FeedScreen extends StatelessWidget {
           return ListView.builder(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
-                log(snapshot.data!.docs[index]['description']);
-                return const PostCard();
+                final snap = snapshot.data!.docs[index];
+                log(snapshot.data!.docs[index].data()['description']);
+                return PostCard(
+                  description: snap['description'],
+                  postPhoto: snap['phot_url'],
+                  profileImage: snap['profile_image'],
+                  userName: snap['user_name'],
+                  dataTime: snap['date_published'].toDate(),
+                  likes: snap['likes'].length.toString(),
+                );
               });
         },
       ),

@@ -8,7 +8,7 @@ class UserProvider extends ChangeNotifier {
   final AuthMethods _authMethods = AuthMethods();
   bool isLoading = true;
   // Getters
-  User get getUser => _user!;
+  User? get getUser => _user;
 
   // Functions
 

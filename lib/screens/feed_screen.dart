@@ -46,6 +46,7 @@ class FeedScreen extends StatelessWidget {
                 final snap = snapshot.data!.docs[index];
                 log(snapshot.data!.docs[index].data()['description']);
                 return PostCard(
+                  snap:snap,
                   description: snap['description'],
                   postPhoto: snap['phot_url'],
                   profileImage: snap['profile_image'],

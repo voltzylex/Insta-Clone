@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/resources/fierstore_methods.dart';
+import 'package:instagram_clone/screens/comments_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/global_variable.dart';
 import 'package:instagram_clone/widgets/like_animation.dart';
@@ -152,16 +153,27 @@ class _PostCardState extends State<PostCard> {
                     LikeAnimation(
                       isAnimationg: widget.likes.contains(user.uid ?? ""),
                       child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.favorite,
-                          color: Colors.red,
-                        ),
+                        onPressed: () async {
+                          await FireStoreMethos().likePost(
+                              widget.snap["post_id"],
+                              user.uid,
+                              widget.snap['likes']);
+                        },
+                        icon: widget.snap['likes'].contains(user.uid)
+                            ? const Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                              )
+                            : const Icon(Icons.favorite_border),
                       ),
                     ),
-                    const IconButton(
-                      onPressed: null,
-                      icon: Icon(
+                    IconButton(
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CommentsScreen(),
+                          )),
+                      icon: const Icon(
                         Icons.comment,
                         color: Colors.white,
                       ),

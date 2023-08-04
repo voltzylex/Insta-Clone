@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:instagram_clone/utils/global_variable.dart';
 
 class CommentCard extends StatefulWidget {
-  const CommentCard({super.key});
+  const CommentCard({super.key, this.snap});
+  final snap;
 
   @override
   State<CommentCard> createState() => _CommentCardState();

@@ -15,6 +15,7 @@ class FireStoreMethos {
     required String username,
     required String profileImage,
   }) async {
+    // ignore: unused_local_variable
     String res = "some error occured";
     try {
       String photoUrl = await StorageMethods()
@@ -51,5 +52,37 @@ class FireStoreMethos {
     } catch (e) {
       log(e.toString());
     }
+  }
+
+  Future<void> postComment(
+      {required String postId,
+      required String text,
+      required String uid,
+      required String name,
+      required String profilePic}) async {
+ 
+    try {
+      if (text.isNotEmpty) {
+        String commentId = const Uuid().v1();
+        await _storage
+            .collection('posts')
+            .doc(postId)
+            .collection('comments')
+            .doc(commentId)
+            .set({
+          'profilePic': profilePic,
+          'userName': name,
+          'commentId': commentId,
+          'text': text,
+          'datePublished': DateTime.now()
+        });
+      } else {
+        log("Post Comment : Text is Empty");
+      }
+
+    } catch (e) {
+      log("Post comment $e");
+    }
+  
   }
 }

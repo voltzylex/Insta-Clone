@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/utils/global_variable.dart';
+import 'package:intl/intl.dart';
 
 class CommentCard extends StatefulWidget {
   const CommentCard({super.key, this.snap});
@@ -16,8 +16,8 @@ class _CommentCardState extends State<CommentCard> {
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
       child: Row(
         children: [
-          const CircleAvatar(
-            backgroundImage: NetworkImage(avatarImage),
+          CircleAvatar(
+            backgroundImage: NetworkImage(widget.snap['profilePic']),
             radius: 18,
           ),
           Expanded(
@@ -28,26 +28,27 @@ class _CommentCardState extends State<CommentCard> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                       children: [
                         TextSpan(
-                          text: "user name",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          text: widget.snap['userName'] + " ",
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         TextSpan(
-                            text: "Some desription to enter",
-                            style: TextStyle(fontSize: 10)),
+                            text: widget.snap['text'],
+                            style: const TextStyle(fontSize: 10)),
                       ],
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(
+                  Padding(
+                    padding: const EdgeInsets.only(
                       top: 4,
                     ),
                     child: Text(
-                      "23/12/32",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
+                      DateFormat.yMMMd()
+                          .format(widget.snap["datePublished"].toDate()),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w400, fontSize: 12),
                     ),
                   ),
                 ],

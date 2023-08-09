@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/providers/userProvider.dart';
@@ -48,16 +46,18 @@ class _CommentsScreenState extends State<CommentsScreen> {
               child: CircularProgressIndicator(),
             );
           }
-          log(snapshot.data!.docs[1].data().toString());
+          // log(snapshot.data!.docs[index].data().toString());
           return ListView.builder(
             itemCount: (snapshot.data! as dynamic).docs.length,
-            itemBuilder: (context, index) => CommentCard(snap: widget.snap),
+            itemBuilder: (context, index) =>
+                CommentCard(snap: snapshot.data!.docs[index].data()),
           );
         },
         stream: FirebaseFirestore.instance
             .collection("posts")
             .doc(widget.snap['post_id'])
             .collection("comments")
+            .orderBy("datePublished", descending: true)
             .snapshots(),
       ),
       bottomNavigationBar: SafeArea(
@@ -86,7 +86,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
               ),
               InkWell(
                 onTap: () async {
-                  await FireStoreMethos().postComment(
+                  await FireStoreMethods().postComment(
                       postId: widget.snap['post_id'],
                       text: commentController.text,
                       uid: user.uid,

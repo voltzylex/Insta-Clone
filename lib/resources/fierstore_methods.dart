@@ -6,7 +6,7 @@ import 'package:instagram_clone/models/posts.dart';
 import 'package:instagram_clone/resources/storage_method.dart';
 import 'package:uuid/uuid.dart';
 
-class FireStoreMethos {
+class FireStoreMethods {
   final FirebaseFirestore _storage = FirebaseFirestore.instance;
   Future<String> uploadPost({
     required String uid,
@@ -60,7 +60,6 @@ class FireStoreMethos {
       required String uid,
       required String name,
       required String profilePic}) async {
- 
     try {
       if (text.isNotEmpty) {
         String commentId = const Uuid().v1();
@@ -79,10 +78,17 @@ class FireStoreMethos {
       } else {
         log("Post Comment : Text is Empty");
       }
-
     } catch (e) {
       log("Post comment $e");
     }
-  
+  }
+
+  // Delete Function
+  Future<void> deletePost(String postId) async {
+    try {
+      await _storage.collection("posts").doc(postId).delete();
+    } catch (e) {
+      log("error message : $e");
+    }
   }
 }

@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/resources/fierstore_methods.dart';
 import 'package:instagram_clone/screens/comments_screen.dart';
@@ -33,6 +36,24 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   bool likeIsAnimating = false;
+  int commentLength = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCommentLength();
+  }
+
+  void getCommentLength() async {
+    QuerySnapshot length = await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(widget.snap['post_id'])
+        .collection('comments')
+        .get();
+    commentLength = length.docs.length;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context, listen: true).getUser!;
@@ -77,7 +98,18 @@ class _PostCardState extends State<PostCard> {
                                 shrinkWrap: true,
                                 children: ["Delete", "Edit"]
                                     .map((e) => InkWell(
-                                          onTap: () {},
+                                          onTap: () async {
+                                            log(e.toString());
+                                            switch (e) {
+                                              case "Delete":
+                                                FireStoreMethods().deletePost(
+                                                    widget.snap['post_id']);
+                                                Navigator.pop(context);
+
+                                                break;
+                                              default:
+                                            }
+                                          },
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 12, horizontal: 16),
@@ -99,7 +131,7 @@ class _PostCardState extends State<PostCard> {
           // IMAGE SECTION
           GestureDetector(
             onDoubleTap: () async {
-              await FireStoreMethos().likePost(
+              await FireStoreMethods().likePost(
                   widget.snap["post_id"], user.uid, widget.snap['likes']);
               setState(() {
                 likeIsAnimating = true;
@@ -146,7 +178,7 @@ class _PostCardState extends State<PostCard> {
                 isAnimationg: widget.likes.contains(user.uid ?? ""),
                 child: IconButton(
                   onPressed: () async {
-                    await FireStoreMethos().likePost(
+                    await FireStoreMethods().likePost(
                         widget.snap["post_id"], user.uid, widget.snap['likes']);
                   },
                   icon: widget.snap['likes'].contains(user.uid)
@@ -161,7 +193,7 @@ class _PostCardState extends State<PostCard> {
                 onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>  CommentsScreen(snap: widget.snap),
+                      builder: (context) => CommentsScreen(snap: widget.snap),
                     )),
                 icon: const Icon(
                   Icons.comment,
@@ -218,9 +250,10 @@ class _PostCardState extends State<PostCard> {
                 ),
                 InkWell(
                   child: Container(
-                    child: const Text(
-                      "View all 200 comments",
-                      style: TextStyle(fontSize: 16, color: secondaryColor),
+                    child: Text(
+                      "View all $commentLength comments",
+                      style:
+                          const TextStyle(fontSize: 16, color: secondaryColor),
                     ),
                   ),
                 ),

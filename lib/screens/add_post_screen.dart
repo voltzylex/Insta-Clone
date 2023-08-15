@@ -116,6 +116,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 : Scaffold(
                     appBar: AppBar(
                       backgroundColor: mobileBackgroundColor,
+                      
                       leading: const IconButton(
                           onPressed: null, icon: Icon(Icons.arrow_back)),
                       title: const Text("Post to"),

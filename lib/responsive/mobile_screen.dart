@@ -20,7 +20,7 @@ class _MobileScreenState extends State<MobileScreen> {
   late PageController _pageController;
   @override
   void initState() {
-    _pageController = PageController(initialPage: 1);
+    _pageController = PageController(initialPage: 4);
     addData();
     super.initState();
     // getUserDetails();

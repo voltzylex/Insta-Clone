@@ -172,22 +172,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               childAspectRatio: 1,
                             ),
                             itemBuilder: (context, index) {
-                              return Container(
-                                child: Image(
-                                  image: NetworkImage(
-                                    snapshot.data!.docs[index]['phot_url'],
+                              return InkWell(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Hero(
+                                        
+                                        tag: "openImage",
+                                        child: Material(
+                                          color: Colors.transparent,
+                                          child: InkWell(
+                                            onTap: () => Navigator.pop(context),
+                                            child: Image(
+                                              image: NetworkImage(
+                                                snapshot.data!.docs[index]
+                                                    ['phot_url'],
+                                              ),
+                                              fit: BoxFit.contain,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  child: Image(
+                                    image: NetworkImage(
+                                      snapshot.data!.docs[index]['phot_url'],
+                                    ),
+                                    fit: BoxFit.cover,
                                   ),
-                                  fit: BoxFit.cover,
+                                  // decoration:
+                                  // BoxDecoration(
+                                  //   image: DecorationImage(
+                                  //     fit: BoxFit.cover,
+                                  //     image: NetworkImage(
+                                  //       snapshot.data!.docs[index]['phot_url'],
+                                  //     ),
+                                  //   ),
+                                  // ),
                                 ),
-                                // decoration:
-                                // BoxDecoration(
-                                //   image: DecorationImage(
-                                //     fit: BoxFit.cover,
-                                //     image: NetworkImage(
-                                //       snapshot.data!.docs[index]['phot_url'],
-                                //     ),
-                                //   ),
-                                // ),
                               );
                             },
                           );

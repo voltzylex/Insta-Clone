@@ -2,8 +2,10 @@ import 'dart:developer';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:instagram_clone/models/user.dart' as model;
 import 'package:instagram_clone/resources/storage_method.dart';
+import 'package:instagram_clone/screens/login_screen.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -89,5 +91,12 @@ class AuthMethods {
     }
     log("exception: $res");
     return res;
+  }
+  // Sign out function 
+  Future<void> signOut(BuildContext? context)async{
+       await _auth.signOut();
+                  Navigator.of(context!
+                  ).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const LoginScreen()));
   }
 }

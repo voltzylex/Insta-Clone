@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/resources/auth_method.dart';
+import 'package:instagram_clone/resources/fierstore_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/widgets/follow_button.dart';
 
@@ -46,7 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         postLength = posts.docs.length;
         followers = userData['folowers'].length;
         following = userData['followings'].length;
-        isFollowing = userData["followings"].contains(currentUid);
+        isFollowing = userData["folowers"].contains(currentUid);
       });
     } catch (e) {
       setState(() {
@@ -102,11 +104,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 currentUid == widget.uid
                                     ? FollowButton(
-                                        text: "Edit Profile",
+                                        text: "Sign Out",
                                         buttonColor: mobileBackgroundColor,
                                         textColor: primaryColor,
                                         borderColor: Colors.grey,
-                                        onFunction: () {},
+                                        onFunction: () async {
+                                          await AuthMethods().signOut(context);
+                                        },
                                       )
                                     : isFollowing
                                         ? FollowButton(
@@ -114,14 +118,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             buttonColor: primaryColor,
                                             textColor: mobileBackgroundColor,
                                             borderColor: Colors.grey,
-                                            onFunction: () {},
+                                            onFunction: () async {
+                                              await FireStoreMethods()
+                                                  .followUser(
+                                                      uid: FirebaseAuth.instance
+                                                          .currentUser?.uid,
+                                                      followId:
+                                                          userData['uid']);
+                                              setState(() {
+                                                isFollowing = false;
+                                                followers--;
+                                              });
+                                            },
                                           )
                                         : FollowButton(
                                             text: "Follow",
                                             buttonColor: blueColor,
                                             textColor: primaryColor,
                                             borderColor: Colors.grey,
-                                            onFunction: () {},
+                                            onFunction: () async {
+                                              await FireStoreMethods()
+                                                  .followUser(
+                                                      uid: FirebaseAuth.instance
+                                                          .currentUser?.uid,
+                                                      followId:
+                                                          userData['uid']);
+                                              setState(() {
+                                                isFollowing = true;
+                                                followers++;
+                                              });
+                                            },
                                           ),
                               ],
                             ),
@@ -178,7 +204,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     context: context,
                                     builder: (context) {
                                       return Hero(
-                                        
                                         tag: "openImage",
                                         child: Material(
                                           color: Colors.transparent,

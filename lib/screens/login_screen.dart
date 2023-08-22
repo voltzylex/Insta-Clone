@@ -9,6 +9,7 @@ import 'package:instagram_clone/responsive/web_screen.dart';
 
 import 'package:instagram_clone/screens/signup_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/utils/global_variable.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -62,10 +63,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log(MediaQuery.sizeOf(context).width.toString());
+    final screenHeight = MediaQuery.sizeOf(context).width;
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+          padding: screenHeight > webScreenSize
+              ? EdgeInsets.symmetric(
+                  horizontal: MediaQuery.sizeOf(context).width / 3)
+              : const EdgeInsets.symmetric(horizontal: 32),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

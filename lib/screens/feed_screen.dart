@@ -15,23 +15,25 @@ class FeedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: mobileBackgroundColor,
-        centerTitle: false,
-        title: SvgPicture.asset(
-          instagramIcon,
-          height: 30,
-          color: primaryColor,
-        ),
-        actions: const [
-          IconButton(
-              onPressed: null,
-              icon: Icon(
-                Icons.messenger_outline,
+      appBar: MediaQuery.sizeOf(context).width > webScreenSize
+          ? null
+          : AppBar(
+              backgroundColor: mobileBackgroundColor,
+              centerTitle: false,
+              title: SvgPicture.asset(
+                instagramIcon,
+                height: 30,
                 color: primaryColor,
-              ))
-        ],
-      ),
+              ),
+              actions: const [
+                IconButton(
+                    onPressed: null,
+                    icon: Icon(
+                      Icons.messenger_outline,
+                      color: primaryColor,
+                    ))
+              ],
+            ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('posts').snapshots(),
         builder: (context,

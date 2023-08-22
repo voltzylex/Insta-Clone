@@ -57,10 +57,20 @@ class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context, listen: true).getUser!;
+    final screenWidth = MediaQuery.sizeOf(context).width;
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-      decoration: const BoxDecoration(color: mobileBackgroundColor),
+      margin: EdgeInsets.symmetric(
+          horizontal: screenWidth > webScreenSize ? screenWidth / 3 : 0,
+          vertical: screenWidth > webScreenSize ? 15 : 0),
+      decoration: BoxDecoration(
+          color: mobileBackgroundColor,
+          border: Border.all(
+              width: screenWidth > webScreenSize ? 2 : 0,
+              color: screenWidth > webScreenSize
+                  ? primaryColor
+                  : Colors.transparent)),
       child: Column(
         children: [
           Container(
